@@ -1,0 +1,48 @@
+<%- include('../../partials/header.ejs'); %>
+<%- include('../../partials/navbar.ejs'); %>
+
+<div class="container">
+    <hr>
+    <h2>Artigos</h2><br>
+    <a class="btn btn-success" href="/admin/articles/new">Criar novo artigo</a>
+    <hr>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Slug</th>
+                <th>Categoria</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% articles.forEach(function(temp){%>
+                <tr>
+                    <td><%= temp.id %></td>
+                    <td><%= temp.title %></td>
+                    <td><%= temp.slug %></td>
+                    <td><%= temp.category.title %></td>
+                    <td>
+                        <a class="btn btn-warning" href="/admin/articles/edit/<%= temp.id %>">Editar</a>
+
+                        <form method="POST" action="/articles/delete" style="display:inline" onsubmit="confirmErase(event, this)">
+                            <input type="hidden" value="<%= temp.id %>" name="id">
+                            <button class="btn btn-danger" type="submit">Deletar</button>
+                        </form>
+                    </td>                    
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+</div>
+<script>
+    function confirmErase(event, form){
+        event.preventDefault();
+        var decision = confirm("Confirma em deletar esse artigo?");
+        if (decision) {
+           form.submit();
+        }
+    }
+</script>
+<%- include('../../partials/footer.ejs') %>
